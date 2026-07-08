@@ -1,0 +1,43 @@
+EXPANSION_SOURCES = [
+    {
+        "name": "巨潮资讯网（上市公司公告）",
+        "homepage": "https://www.cninfo.com.cn",
+        "url": "https://www.cninfo.com.cn/new/disclosure",
+        "province": "",
+        "enabled": True,
+        "type": "public_notice",
+    },
+    {
+        "name": "江苏投资项目在线审批平台",
+        "homepage": "https://tzxm.jiangsu.gov.cn",
+        "url": "https://tzxm.jiangsu.gov.cn",
+        "province": "江苏",
+        "enabled": True,
+        "type": "investment_project",
+    },
+    {
+        "name": "安徽投资项目平台",
+        "homepage": "https://tzxm.ahzwfw.gov.cn",
+        "url": "https://tzxm.ahzwfw.gov.cn",
+        "province": "安徽",
+        "enabled": True,
+        "type": "investment_project",
+    },
+    {
+        "name": "山东投资项目平台",
+        "homepage": "https://www.sdtzxm.gov.cn",
+        "url": "https://www.sdtzxm.gov.cn",
+        "province": "山东",
+        "enabled": True,
+        "type": "investment_project",
+    },
+    {
+        "name": "各地发改委公开项目公示页",
+        "homepage": "",
+        "url": "",
+        "province": "",
+        "enabled": False,
+        "type": "local_ndrc_notice",
+        "remark": "Add local NDRC public project notice URLs here.",
+    },
+]

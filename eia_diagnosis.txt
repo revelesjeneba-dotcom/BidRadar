@@ -1,0 +1,194 @@
+PackagingRadar EIA Debug Diagnosis
+Run time: 2026-07-05 16:20:00
+
+===== SUMMARY =====
+Raw count: 120
+Unique titles: 28
+Province matched: 120
+Industry matched: 0
+EIA matched: 0
+Province + Industry: 0
+EIA + Industry: 0
+Final matched: 0
+
+===== EIA KEYWORDS =====
+环境影响报告书 : 0
+环境影响报告表 : 0
+审批公示 : 0
+受理公示 : 0
+拟审批公示 : 0
+环评公示 : 0
+环境影响评价 : 0
+
+===== INDUSTRY KEYWORDS =====
+食品 : 0
+饮料 : 0
+乳业 : 0
+酒业 : 0
+食品加工 : 0
+农副产品加工 : 0
+预制菜 : 0
+调味品 : 0
+粮油 : 0
+家电 : 0
+电子 : 0
+医疗 : 0
+物流 : 0
+包装 : 0
+
+===== REGION KEYWORDS =====
+江苏 : 44
+南京 : 3
+无锡 : 4
+徐州 : 0
+常州 : 0
+苏州 : 4
+南通 : 0
+连云港 : 0
+淮安 : 0
+盐城 : 0
+扬州 : 0
+镇江 : 0
+泰州 : 0
+宿迁 : 0
+安徽 : 44
+合肥 : 8
+芜湖 : 4
+蚌埠 : 4
+淮南 : 4
+马鞍山 : 4
+淮北 : 4
+铜陵 : 4
+安庆 : 4
+黄山 : 12
+滁州 : 4
+阜阳 : 4
+宿州 : 4
+六安 : 4
+亳州 : 4
+池州 : 4
+宣城 : 4
+山东 : 40
+济南 : 12
+青岛 : 6
+淄博 : 4
+枣庄 : 3
+东营 : 3
+烟台 : 3
+潍坊 : 3
+济宁 : 3
+泰安 : 3
+威海 : 3
+日照 : 3
+临沂 : 3
+德州 : 3
+聊城 : 3
+滨州 : 3
+菏泽 : 3
+
+===== CROSS STATS =====
+EIA + Industry: 0
+Industry + Region: 0
+EIA + Industry + Region: 0
+
+===== SAMPLE TITLES =====
+baidu.com https://baike.baidu.com › item › 江苏
+jseea.cn https://www.jseea.cn
+jiangsu.gov.cn https://www.jiangsu.gov.cn
+jszwfw.gov.cn https://www.jszwfw.gov.cn › index.html
+jiangsu.gov.cn https://rs.jshrss.jiangsu.gov.cn › index
+zgjssw.gov.cn https://www.zgjssw.gov.cn
+zhihu.com https://zhuanlan.zhihu.com
+jszzb.gov.cn https://www.jszzb.gov.cn
+baidu.com https://baike.baidu.com › item › 江苏省
+zgjssw.gov.cn https://www.zgjssw.gov.cn › shengqingbeilan › general
+baidu.com https://baike.baidu.com › item › 江苏
+jseea.cn https://www.jseea.cn
+jiangsu.gov.cn https://www.jiangsu.gov.cn
+jszwfw.gov.cn https://www.jszwfw.gov.cn › index.html
+jiangsu.gov.cn https://rs.jshrss.jiangsu.gov.cn › index
+zgjssw.gov.cn https://www.zgjssw.gov.cn
+zhihu.com https://zhuanlan.zhihu.com
+jszzb.gov.cn https://www.jszzb.gov.cn
+baidu.com https://baike.baidu.com › item › 江苏省
+zgjssw.gov.cn https://www.zgjssw.gov.cn › shengqingbeilan › general
+baidu.com https://baike.baidu.com › item › 江苏
+jseea.cn https://www.jseea.cn
+jiangsu.gov.cn https://www.jiangsu.gov.cn
+jszwfw.gov.cn https://www.jszwfw.gov.cn › index.html
+jiangsu.gov.cn https://rs.jshrss.jiangsu.gov.cn › index
+zgjssw.gov.cn https://www.zgjssw.gov.cn
+zhihu.com https://zhuanlan.zhihu.com
+jszzb.gov.cn https://www.jszzb.gov.cn
+baidu.com https://baike.baidu.com › item › 江苏省
+zgjssw.gov.cn https://www.zgjssw.gov.cn › shengqingbeilan › general
+baidu.com https://baike.baidu.com › item › 江苏
+jseea.cn https://www.jseea.cn
+jiangsu.gov.cn https://www.jiangsu.gov.cn
+jszwfw.gov.cn https://www.jszwfw.gov.cn › index.html
+jiangsu.gov.cn https://rs.jshrss.jiangsu.gov.cn › index
+zgjssw.gov.cn https://www.zgjssw.gov.cn
+zhihu.com https://zhuanlan.zhihu.com
+jszzb.gov.cn https://www.jszzb.gov.cn
+baidu.com https://baike.baidu.com › item › 江苏省
+zgjssw.gov.cn https://www.zgjssw.gov.cn › shengqingbeilan › general
+baidu.com https://baike.baidu.com › item › 安徽
+ah.gov.cn https://www.ah.gov.cn
+thepaper.cn https://www.thepaper.cn
+zhihu.com https://zhuanlan.zhihu.com
+zhihu.com https://zhuanlan.zhihu.com
+baidu.com https://baike.baidu.com › item › 安徽省
+sohu.com https://www.sohu.com
+sogou.com https://baike.sogou.com
+ahzwfw.gov.cn http://www.ahzwfw.gov.cn
+ahnews.com.cn http://www.ahnews.com.cn
+baidu.com https://baike.baidu.com › item › 安徽
+ah.gov.cn https://www.ah.gov.cn
+thepaper.cn https://www.thepaper.cn
+zhihu.com https://zhuanlan.zhihu.com
+zhihu.com https://zhuanlan.zhihu.com
+baidu.com https://baike.baidu.com › item › 安徽省
+sohu.com https://www.sohu.com
+sogou.com https://baike.sogou.com
+ahzwfw.gov.cn http://www.ahzwfw.gov.cn
+ahnews.com.cn http://www.ahnews.com.cn
+baidu.com https://baike.baidu.com › item › 安徽
+ah.gov.cn https://www.ah.gov.cn
+thepaper.cn https://www.thepaper.cn
+zhihu.com https://zhuanlan.zhihu.com
+zhihu.com https://zhuanlan.zhihu.com
+baidu.com https://baike.baidu.com › item › 安徽省
+sohu.com https://www.sohu.com
+sogou.com https://baike.sogou.com
+ahzwfw.gov.cn http://www.ahzwfw.gov.cn
+ahnews.com.cn http://www.ahnews.com.cn
+baidu.com https://baike.baidu.com › item › 安徽
+ah.gov.cn https://www.ah.gov.cn
+thepaper.cn https://www.thepaper.cn
+zhihu.com https://zhuanlan.zhihu.com
+zhihu.com https://zhuanlan.zhihu.com
+baidu.com https://baike.baidu.com › item › 安徽省
+sohu.com https://www.sohu.com
+sogou.com https://baike.sogou.com
+ahzwfw.gov.cn http://www.ahzwfw.gov.cn
+ahnews.com.cn http://www.ahnews.com.cn
+baidu.com https://zhidao.baidu.com › question
+baidu.com https://zhidao.baidu.com › question
+zhihu.com https://www.zhihu.com › question
+zhihu.com https://www.zhihu.com › question
+toutiao.com https://www.toutiao.com › topic
+toutiao.com https://www.toutiao.com › topic
+baidu.com https://zhidao.baidu.com › question
+zhihu.com https://www.zhihu.com › question
+toutiao.com https://www.toutiao.com › topic
+baidu.com https://zhidao.baidu.com › question
+baidu.com https://baike.baidu.com › item › 山东
+shandong.gov.cn http://www.shandong.gov.cn
+baidu.com https://baike.baidu.com › item › 山东省行政区划
+zhihu.com https://zhuanlan.zhihu.com
+qq.com https://news.qq.com › rain
+chsi.com.cn https://gaokao.chsi.com.cn › shandong
+sd.gov.cn https://zwfw.sd.gov.cn
+zhihu.com https://zhuanlan.zhihu.com
+sdzk.cn https://cdn.sdzk.cn
+baidu.com https://baike.baidu.com › item › 山东
