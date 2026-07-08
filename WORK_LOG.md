@@ -39,3 +39,12 @@
 - 已确认网络访问次数为 0。
 - 已通过哈希对比确认正式结果文件未被覆盖。
 - 兼容问题：`exporter.export_to_excel()` 会读取已有输出文件作为历史并影响重复测试的“本次新增”统计；测试入口改用独立测试导出逻辑，只写入 `test_output`。
+
+## 2026-07-08 Git 初始化
+
+- Git 初始化完成。
+- 初始提交号：`ebeda8b`。
+- 初始提交后工作区状态：干净。
+- `backup/` 和 `test_output/` 已通过 `.gitignore` 排除。
+- `__pycache__/`、`*.pyc`、`*.pyo` 已通过 `.gitignore` 排除。
+- `test_sample_run.py` 已纳入版本管理。
