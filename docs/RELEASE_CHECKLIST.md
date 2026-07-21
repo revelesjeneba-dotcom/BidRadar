@@ -1,18 +1,26 @@
-# Release Checklist
+# Release Checklist — BidRadar V6.6.0
 
-- [ ] CHANGELOG
-- [ ] PROJECT_STATUS
-- [ ] FILE_MAP
-- [ ] paths.py
-- [ ] Git Commit
-- [ ] 主流程验证
-- [ ] Excel 输出验证
-- [ ] 备份
+检查日期：2026-07-21
 
-## 发布前确认
+## 已完成
 
-- [ ] 是否运行了真实采集。
-- [ ] 是否产生了 Excel/TXT 数据变化。
-- [ ] 是否更新了 `docs/MODULE_INDEX.md`。
-- [ ] 是否更新了 `docs/DATA_FLOW.md`。
-- [ ] 是否符合 `docs/DEVELOPMENT_RULES.md`。
+- [x] README、CHANGELOG、PROJECT_STATUS、TODO、WORK_LOG 和 FILE_MAP 已更新到 V6.6.0。
+- [x] `paths.py` 已统一登记业务、调试 Excel 和 TXT 路径。
+- [x] 48 项离线单元测试全部通过，0 失败、0 错误。
+- [x] 54 个项目 Python 文件通过无字节码语法检查。
+- [x] Excel 不存在、损坏、读取失败、写入失败、备份失败和临时文件失败场景已验证。
+- [x] 从其他工作目录导入路径配置验证通过。
+- [x] 测试前后正式 Excel/TXT SHA-256 一致。
+- [x] 未运行真实采集、URL 验证或 `main.py` 正式模式。
+- [x] 未发现 backup、临时文件、`.pyc` 或项目 `__pycache__` 进入版本变更。
+- [x] 本次未修改采集、评分、过滤、唯一 ID、Excel 字段或业务逻辑。
+
+## 待人工确认
+
+- [ ] 提交 V6.6-09 发布文档。
+- [ ] 推送提交并确认远端分支状态。
+- [ ] 如采用版本标签，创建并推送 `v6.6.0`。
+
+## 发布说明
+
+离线代码与数据安全验证已达到 V6.6.0 发布标准。真实采集验收不属于 V6.6-09，若后续执行，必须使用独立授权和隔离输出方案。

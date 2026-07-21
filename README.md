@@ -1,70 +1,59 @@
-# BidRadar 招标雷达
+# BidRadar V6.6.0 招标雷达
 
-## 项目用途
+## 项目目标
 
-BidRadar 是一个面向纸箱、包装箱、纸制品包装等行业关键词的招标和项目线索整理工具。项目会从公开信息源或本地样例数据中收集线索，过滤行业相关内容，识别地区，评分，并导出 Excel 结果和日报文本。
+BidRadar 面向纸箱、包装箱和纸制品包装业务，将公开招标、生产项目、环评、扩产及企业采购入口等线索整理为可跟进的结构化数据。系统负责采集、行业过滤、地区识别、价值评分、结果归档、客户池维护和跟进任务生成。
 
-## 当前主要功能
+## 当前架构
 
-- 公开招标信息采集、行业关键词过滤、地区识别和价值评分。
-- 招标结果导出到 `bid_results.xlsx`，并生成 `daily_report.txt`。
-- 环评、扩产、生产项目等项目线索监控模块。
-- 高价值线索筛选、客户池维护、跟进任务生成。
-- 企业采购入口发现、候选网址排序、状态维护和验证。
-- 手工导入、剑鱼网原始结果导入、调试数据导出等辅助流程。
+- 采集层：`crawler.py`、企业入口脚本及项目监控脚本负责获取公开信息。
+- 业务层：`industry_filter.py`、`scoring.py`、客户池、跟进和候选导入模块保持既有规则。
+- 数据层：`paths.py` 统一登记项目根目录下的 Excel/TXT 路径；`utils/excel_helper.py` 提供安全 Excel 读写。
+- 输出层：主结果、项目结果、客户池、状态表、调试 Excel 和 UTF-8 文本报告。
+- 验证层：`tests/` 提供离线回归、数据契约、安全写入、故障注入和跨工作目录路径测试。
 
-## 主要入口文件
+详细结构见 `docs/ARCHITECTURE.md`、`docs/DATA_FLOW.md` 和 `FILE_MAP.md`。
 
-- `main.py`：主入口。根据 `USE_SAMPLE_DATA` 决定使用本地模拟数据或调用 `crawler.py` 采集公开网页，然后构建结果、导出 Excel、生成日报。
-- `run_bidrader.bat`：Windows 批处理入口。切换到脚本所在目录后执行 `python main.py`。
+## V6.6.0 数据安全能力
 
-## 主要模块
+- Excel 读取失败立即报错，禁止把损坏或不可读历史当作空表覆盖。
+- 已有 Excel/TXT 写入前自动备份到 `backup/auto/`。
+- 使用同目录临时文件、写后回读验证和原子替换；失败时保留原文件。
+- 客户池及状态表保留未知人工字段和原列顺序。
+- 企业入口验证写回前检查外部修改，避免覆盖人工更新。
+- `paths.py` 使用项目根目录绝对 `Path`，不依赖启动时的当前工作目录。
+- Excel 数据契约、模块索引和 48 项离线回归测试覆盖主要安全场景。
 
-- `config.py`：项目名称、行业关键词、采购关键词、重点省份、地区别名、输出文件和 Excel 字段配置。
-- `crawler.py`：公开招标来源采集。
-- `exporter.py`：结果去重、唯一 ID、Excel 导出。
-- `reporter.py`：日报文本生成。
-- `sample_data.py`：本地模拟数据。
-- `scoring.py`：线索价值评分、等级、优先级和推荐动作。
-- `industry_filter.py`：纸箱/包装行业相关性判断。
-- `project_monitor.py`、`eia_monitor.py`、`expansion_monitor.py`：生产、环评、扩产项目监控。
-- `high_value_filter.py`：高价值线索筛选。
-- `customer_pool.py`、`followup_manager.py`、`contact_finder.py`、`candidate_contact_importer.py`：客户池、跟进任务和联系方式处理。
-- `enterprise_crawler.py`、`enterprise_validator.py`、`enterprise_source_manager.py`、`source_discovery.py`、`candidate_importer.py`、`candidate_ranker.py`：企业采购入口发现、导入、排序和验证。
-- `manual_import.py`、`jianyu_search.py`、`jianyu_importer.py`、`debug_raw_results.py`、`eia_debug.py`：手工导入、剑鱼数据、调试和诊断辅助模块。
+## 环境与使用方式
 
-## 主要数据文件
+推荐使用项目虚拟环境：
 
-- `bid_results.xlsx`：主招标结果。
-- `daily_report.txt`：主日报。
-- `raw_results_debug.xlsx`、`raw_jianyu_results.xlsx`：原始/调试结果。
-- `eia_projects.xlsx`、`eia_raw_debug.xlsx`、`eia_diagnosis.txt`：环评项目结果和诊断。
-- `production_projects.xlsx`、`production_raw_debug.xlsx`：生产项目结果和调试数据。
-- `expansion_projects.xlsx`：扩产项目结果。
-- `high_value_leads.xlsx`：高价值线索。
-- `customer_pool.xlsx`、`followup_tasks.xlsx`、`customer_contact_candidates.xlsx`：客户池、跟进任务、联系方式候选。
-- `enterprise_candidates.xlsx`、`enterprise_url_status.xlsx` 及其备份文件：企业采购入口候选和验证状态。
-- `target_companies.xlsx`、`manual_import.xlsx`：目标企业和手工导入模板/数据。
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+```
 
-## 当前运行方式
+安全的离线验证命令：
 
-- 批处理方式：双击或执行 `run_bidrader.bat`，实际会运行 `python main.py`。
-- 命令行方式：在项目目录执行 `python main.py`。
-- 当前 `main.py` 中 `USE_SAMPLE_DATA = False`，表示默认走公开网页采集路径；若要做新目录安全测试，建议先人工确认是否临时切换为模拟数据。
+```bash
+.venv/bin/python -B -m unittest discover -s tests -v
+```
 
-## 安全规则
+主入口为 `main.py`，Windows 批处理入口为 `run_bidrader.bat`。当前 `main.py` 的 `USE_SAMPLE_DATA = False`，正式运行会访问公开网页并可能更新正式 Excel/TXT；运行前必须确认联网授权、数据备份和文件未被 Excel 占用。发布验证不得以 `main.py` 正式模式代替离线测试。
 
-- 不要在未确认运行模式前运行 `main.py` 或 `run_bidrader.bat`。
-- 不要在未确认前运行任何真实采集、浏览器自动化或外部网站访问程序。
-- 不要直接改写已有 Excel、TXT 数据文件，除非已经备份并明确知道对应模块的写入目标。
-- 不要初始化 Git，直到项目结构、运行模式和数据文件归档规则确认完成。
-- 对依赖安装、Playwright 浏览器安装、真实采集测试应单独记录命令和结果。
+## 主要输出
 
-## 尚待确认的问题
+- 主结果：`bid_results.xlsx`、`daily_report.txt`
+- 客户与跟进：`customer_pool.xlsx`、`followup_tasks.xlsx`、`customer_contact_candidates.xlsx`
+- 企业入口：`enterprise_candidates.xlsx`、`enterprise_url_status.xlsx`
+- 项目线索：`production_projects.xlsx`、`eia_projects.xlsx`、`expansion_projects.xlsx`
+- 派生数据：`target_companies.xlsx`、`high_value_leads.xlsx`
+- 调试数据：`raw_results_debug.xlsx`、`raw_jianyu_results.xlsx`、`eia_raw_debug.xlsx`、`production_raw_debug.xlsx`、`eia_diagnosis.txt`
 
-- 新目录首次运行测试是否先将 `USE_SAMPLE_DATA` 调整为 `True`。
-- 现有 Excel 数据文件哪些是正式数据，哪些是调试、备份或可再生成文件。
-- 是否需要固定 Python 版本和创建独立虚拟环境。
-- Playwright 浏览器依赖是否已安装，是否允许后续进行浏览器自动化测试。
-- 各采集源的访问频率、合法合规边界和失败重试策略是否需要统一配置。
-- 是否需要将输出目录与源码目录分离，避免运行时覆盖迁移来的历史数据。
+所有正式路径以 `paths.py` 为准；字段契约见 `docs/EXCEL_CONTRACTS.md`。
+
+## 运行边界
+
+- 未确认前不要运行 `main.py`、真实采集、浏览器自动化或 URL 验证脚本。
+- 不直接编辑或删除 `backup/auto/` 中用于恢复的最新备份。
+- 数据文件与代码/文档应分开检查和提交，提交前确认无 `*.xlsx`、`*.txt`、临时文件、备份、`.pyc` 或 `__pycache__` 进入版本变更。
