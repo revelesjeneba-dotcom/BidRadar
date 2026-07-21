@@ -11,6 +11,7 @@ from urllib.parse import urlparse
 import pandas as pd
 
 from enterprise_sources import ENTERPRISE_SOURCES
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 INPUT_FILE = "enterprise_candidates.xlsx"
@@ -60,7 +61,7 @@ def rank_candidates(input_file=INPUT_FILE):
         print(f"候选入口文件不存在：{input_file}")
         return input_file
 
-    df = pd.read_excel(input_file)
+    df = read_excel_safe(input_file)
     homepage_domains = build_homepage_domain_map()
 
     for column in ["企业名称", "候选网址", "网页标题"]:
@@ -84,7 +85,11 @@ def rank_candidates(input_file=INPUT_FILE):
     df["推荐等级"] = levels
     df["建议"] = suggestions
 
-    df.to_excel(input_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        df,
+        input_file,
+        required_columns=RANK_COLUMNS,
+    )
     print(f"已更新候选入口评分：{input_file}")
     print(f"候选入口数量：{len(df)}")
     return input_file

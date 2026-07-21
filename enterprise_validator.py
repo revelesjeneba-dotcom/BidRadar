@@ -13,13 +13,17 @@ except:
     pass
 
 from datetime import datetime
+import hashlib
 import os
+from pathlib import Path
 import time
 from urllib.parse import urlparse
 
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 STATUS_FILE = "enterprise_url_status.xlsx"
@@ -97,13 +101,19 @@ SEARCH_KEYWORDS = [
 ]
 
 
+class EnterpriseStatusChangedError(RuntimeError):
+    """Raised when the status workbook changes during validation."""
+
+
 def validate_enterprise_urls(status_file=STATUS_FILE):
     """Validate procurement platform URLs and save results to Excel."""
     if not os.path.exists(status_file):
         print(f"[ERROR] Status file not found: {status_file}")
         return status_file
 
-    df = pd.read_excel(status_file)
+    original_fingerprint = _file_fingerprint(status_file)
+    df = read_excel_safe(status_file)
+    _assert_file_unchanged(status_file, original_fingerprint)
 
     for column in VALIDATION_COLUMNS:
         if column not in df.columns:
@@ -147,7 +157,12 @@ def validate_enterprise_urls(status_file=STATUS_FILE):
         if result["是否可采集"] == "是":
             stats["collectable"] += 1
 
-    df.to_excel(status_file, index=False, engine="openpyxl")
+    _assert_file_unchanged(status_file, original_fingerprint)
+    write_excel_safe(
+        df,
+        status_file,
+        required_columns=VALIDATION_COLUMNS,
+    )
     print_validation_stats(stats)
     return status_file
 
@@ -353,6 +368,36 @@ def print_validation_stats(stats):
     print(f"[DONE] Login platforms: {stats['login_platform']}")
     print(f"[DONE] Unavailable: {stats['unavailable']}")
     print(f"[DONE] Collectable: {stats['collectable']}")
+
+
+def _file_fingerprint(path):
+    status_path = Path(path)
+    digest = hashlib.sha256()
+
+    try:
+        with status_path.open("rb") as file:
+            for chunk in iter(lambda: file.read(1024 * 1024), b""):
+                digest.update(chunk)
+    except OSError as error:
+        raise EnterpriseStatusChangedError(
+            f"Unable to fingerprint enterprise status file: {status_path}"
+        ) from error
+
+    stat = status_path.stat()
+    return {
+        "sha256": digest.hexdigest(),
+        "size": stat.st_size,
+        "mtime_ns": stat.st_mtime_ns,
+    }
+
+
+def _assert_file_unchanged(path, original_fingerprint):
+    current_fingerprint = _file_fingerprint(path)
+    if current_fingerprint != original_fingerprint:
+        raise EnterpriseStatusChangedError(
+            "Enterprise status file changed during validation; write aborted: "
+            f"{Path(path)}"
+        )
 
 
 if __name__ == "__main__":

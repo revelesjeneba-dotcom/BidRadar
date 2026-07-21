@@ -22,6 +22,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from enterprise_sources import ENTERPRISE_SOURCES
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 OUTPUT_FILE = "enterprise_candidates.xlsx"
@@ -185,7 +186,11 @@ def export_candidates(candidates, output_file=OUTPUT_FILE):
         keep="first",
     )
     combined_df = combined_df[CANDIDATE_COLUMNS]
-    combined_df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        combined_df,
+        output_file,
+        required_columns=CANDIDATE_COLUMNS,
+    )
 
     print(f"[DONE] Candidate file: {output_file}")
     print(f"[DONE] Candidate count: {len(combined_df)}")
@@ -196,12 +201,7 @@ def _read_history(output_file):
     if not os.path.exists(output_file):
         return pd.DataFrame(columns=CANDIDATE_COLUMNS)
 
-    try:
-        history_df = pd.read_excel(output_file)
-    except Exception as error:
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        print(f"[ERROR] History file read failed; regenerating: {timestamp}; reason: {error}")
-        return pd.DataFrame(columns=CANDIDATE_COLUMNS)
+    history_df = read_excel_safe(output_file)
 
     for column in CANDIDATE_COLUMNS:
         if column not in history_df.columns:

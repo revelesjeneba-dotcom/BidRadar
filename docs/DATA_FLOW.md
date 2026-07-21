@@ -78,6 +78,29 @@ customer_pool.xlsx
 停止所有相关脚本，将对应备份文件复制回原文件位置，再核对列结构和文件哈希。
 V6.6-04 不改变客户匹配、客户更新、联系方式导入或跟进任务生成规则。
 
+## 企业采购入口写入保护（V6.6-05）
+
+```text
+enterprise_sources.py
+  -> enterprise_source_manager.py
+  -> 安全写入 enterprise_url_status.xlsx
+
+enterprise_candidates.xlsx（人工确认）
+  -> candidate_importer.py
+  -> 安全写入 enterprise_url_status.xlsx
+
+enterprise_url_status.xlsx
+  -> 记录文件 SHA-256 / 大小 / 修改时间
+  -> enterprise_validator.py 执行公开 URL 验证
+  -> 写入前复核文件指纹
+  -> 未变化：安全写入验证结果
+  -> 已变化：停止写入并保留人工修改
+```
+
+`source_discovery.py` 和 `candidate_ranker.py` 对候选表的写入也使用相同安全
+工具。V6.6-05 不改变企业来源配置、候选排序、人工确认、URL 验证或登录判断
+规则。
+
 ## 评分
 
 - `scoring.py` 为主招标线索评分。

@@ -17,6 +17,7 @@ import os
 import pandas as pd
 
 from enterprise_sources import ENTERPRISE_SOURCES
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 OUTPUT_FILE = "enterprise_url_status.xlsx"
@@ -82,12 +83,7 @@ def create_enterprise_url_status_file(output_file=OUTPUT_FILE):
     config_df = pd.DataFrame(build_enterprise_url_status())
 
     if file_exists:
-        try:
-            df = pd.read_excel(output_file)
-        except Exception as error:
-            print(f"[ERROR] Existing status file read failed; regenerating: {error}")
-            df = pd.DataFrame(columns=STATUS_COLUMNS)
-
+        df = read_excel_safe(output_file)
         df = _merge_existing_status(df, config_df)
     else:
         df = config_df
@@ -96,8 +92,11 @@ def create_enterprise_url_status_file(output_file=OUTPUT_FILE):
         if column not in df.columns:
             df[column] = _default_for_column(column)
 
-    df = df[STATUS_COLUMNS]
-    df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        df,
+        output_file,
+        required_columns=STATUS_COLUMNS,
+    )
 
     action = "Updated" if file_exists else "Created"
     print(f"[DONE] {action} enterprise procurement status file: {output_file}")

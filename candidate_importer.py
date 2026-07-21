@@ -15,6 +15,8 @@ import os
 
 import pandas as pd
 
+from utils.excel_helper import read_excel_safe, write_excel_safe
+
 
 CANDIDATES_FILE = "enterprise_candidates.xlsx"
 STATUS_FILE = "enterprise_url_status.xlsx"
@@ -58,8 +60,8 @@ def import_confirmed_candidates(
             "unmatched": 0,
         }
 
-    candidates_df = pd.read_excel(candidates_file)
-    status_df = pd.read_excel(status_file)
+    candidates_df = read_excel_safe(candidates_file)
+    status_df = read_excel_safe(status_file)
 
     ensure_columns(candidates_df, REQUIRED_CANDIDATE_COLUMNS)
     ensure_columns(status_df, REQUIRED_STATUS_COLUMNS)
@@ -103,7 +105,11 @@ def import_confirmed_candidates(
         status_df.at[row_index, "备注"] = IMPORT_REMARK
         imported += 1
 
-    status_df.to_excel(status_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        status_df,
+        status_file,
+        required_columns=REQUIRED_STATUS_COLUMNS,
+    )
 
     print(f"[DONE] Imported: {imported}")
     print(f"[DONE] Skipped: {skipped}")
