@@ -12,6 +12,7 @@ import pandas as pd
 from config import OUTPUT_FILE, PROVINCE_CONFIDENCE_COLUMN
 from exporter import EXPORT_COLUMNS
 from scoring import score_bid
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 MANUAL_IMPORT_FILE = "manual_import.xlsx"
@@ -32,7 +33,11 @@ MANUAL_COLUMNS = [
 
 def create_manual_template(import_file=MANUAL_IMPORT_FILE):
     template_df = pd.DataFrame(columns=MANUAL_COLUMNS)
-    template_df.to_excel(import_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        template_df,
+        import_file,
+        required_columns=MANUAL_COLUMNS,
+    )
     print("[DONE] Created manual_import.xlsx template")
     return import_file
 
@@ -44,7 +49,7 @@ def import_manual_bids(
     if not os.path.exists(import_file):
         create_manual_template(import_file)
 
-    manual_df = pd.read_excel(import_file)
+    manual_df = read_excel_safe(import_file)
     manual_df = _ensure_manual_columns(manual_df)
     existing_df = _read_or_create_results(output_file)
 
@@ -98,7 +103,11 @@ def import_manual_bids(
             combined_df[column] = ""
 
     combined_df = combined_df[EXPORT_COLUMNS]
-    combined_df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        combined_df,
+        output_file,
+        required_columns=EXPORT_COLUMNS,
+    )
 
     print(f"导入数量：{len(new_records)}")
     print(f"重复跳过：{skipped}")
@@ -122,15 +131,9 @@ def _ensure_manual_columns(df):
 
 def _read_or_create_results(output_file):
     if not os.path.exists(output_file):
-        empty_df = pd.DataFrame(columns=EXPORT_COLUMNS)
-        empty_df.to_excel(output_file, index=False, engine="openpyxl")
-        return empty_df
-
-    try:
-        return pd.read_excel(output_file)
-    except Exception as error:
-        print(f"[ERROR] Failed to read existing results; recreating: {error}")
         return pd.DataFrame(columns=EXPORT_COLUMNS)
+
+    return read_excel_safe(output_file)
 
 
 def _build_record(row, collected_date):

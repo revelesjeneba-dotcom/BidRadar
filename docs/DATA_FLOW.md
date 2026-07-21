@@ -40,6 +40,22 @@
 - `candidate_importer.py` 将确认的企业入口导入状态表。
 - `candidate_contact_importer.py` 将确认的联系方式导入客户池。
 
+## 主招标结果写入保护（V6.6-03）
+
+```text
+exporter.py / manual_import.py / jianyu_importer.py
+  -> 读取已有 bid_results.xlsx（读取失败则停止）
+  -> 保持原有合并、唯一 ID 和去重逻辑
+  -> 写入同目录临时 Excel
+  -> 回读验证列顺序和行数
+  -> 备份已有 bid_results.xlsx
+  -> 原子替换正式文件
+```
+
+`bid_results.xlsx` 不存在时允许创建。正式文件存在但损坏、被锁定或无法
+读取时，不允许以空历史继续写入。V6.6-03 没有改变主招标结果的列结构和
+业务数据流。
+
 ## 评分
 
 - `scoring.py` 为主招标线索评分。

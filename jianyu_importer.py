@@ -13,6 +13,7 @@ from config import OUTPUT_FILE, PROVINCE_CONFIDENCE_COLUMN
 from exporter import EXPORT_COLUMNS
 from industry_filter import is_carton_related
 from scoring import score_bid
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 RAW_FILE = "raw_jianyu_results.xlsx"
@@ -41,7 +42,7 @@ def import_jianyu_results(
             "output_file": output_file,
         }
 
-    raw_df = pd.read_excel(raw_file)
+    raw_df = read_excel_safe(raw_file)
     raw_count = len(raw_df)
     raw_df = ensure_columns(raw_df, RAW_COLUMNS)
     raw_df = deduplicate_raw_rows(raw_df)
@@ -111,7 +112,11 @@ def import_jianyu_results(
             combined_df[column] = ""
 
     combined_df = combined_df[EXPORT_COLUMNS]
-    combined_df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        combined_df,
+        output_file,
+        required_columns=EXPORT_COLUMNS,
+    )
 
     print(f"原始数量：{raw_count}")
     print(f"有效数量：{valid_count}")
@@ -196,11 +201,7 @@ def read_history(output_file):
     if not os.path.exists(output_file):
         return pd.DataFrame(columns=EXPORT_COLUMNS)
 
-    try:
-        return pd.read_excel(output_file)
-    except Exception as error:
-        print(f"[ERROR] Failed to read existing results; recreating: {error}")
-        return pd.DataFrame(columns=EXPORT_COLUMNS)
+    return read_excel_safe(output_file)
 
 
 def make_jianyu_unique_id(record):

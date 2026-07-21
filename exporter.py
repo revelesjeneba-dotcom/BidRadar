@@ -2,6 +2,7 @@ import pandas as pd
 import os
 
 from config import PROVINCE_CONFIDENCE_COLUMN
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 EXPORT_COLUMNS = [
     "唯一ID",
@@ -98,7 +99,11 @@ def export_to_excel(records, output_file):
             combined_df[column] = ""
 
     combined_df = combined_df[EXPORT_COLUMNS]
-    combined_df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        combined_df,
+        output_file,
+        required_columns=EXPORT_COLUMNS,
+    )
 
     return output_file
 
@@ -107,11 +112,7 @@ def _read_history(output_file):
     if not os.path.exists(output_file):
         return pd.DataFrame(columns=EXPORT_COLUMNS)
 
-    try:
-        history_df = pd.read_excel(output_file)
-    except Exception as error:
-        print(f"历史结果读取失败，将重新生成：{error}")
-        return pd.DataFrame(columns=EXPORT_COLUMNS)
+    history_df = read_excel_safe(output_file)
 
     for column in EXPORT_COLUMNS:
         if column not in history_df.columns:
