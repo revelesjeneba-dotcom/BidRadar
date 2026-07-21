@@ -8,6 +8,8 @@ import os
 
 import pandas as pd
 
+from utils.excel_helper import read_excel_safe, write_excel_safe
+
 
 OUTPUT_FILE = "target_companies.xlsx"
 
@@ -100,18 +102,17 @@ def create_or_update_target_companies(output_file=OUTPUT_FILE):
     seed_df = pd.DataFrame(build_seed_rows())
 
     if os.path.exists(output_file):
-        try:
-            df = pd.read_excel(output_file)
-        except Exception as error:
-            print(f"[ERROR] Existing target company file read failed; recreating: {error}")
-            df = pd.DataFrame(columns=TARGET_COMPANY_COLUMNS)
+        df = read_excel_safe(output_file)
     else:
         df = pd.DataFrame(columns=TARGET_COMPANY_COLUMNS)
 
     df = ensure_columns(df)
     df = merge_seed_companies(df, seed_df)
-    df = df[TARGET_COMPANY_COLUMNS]
-    df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        df,
+        output_file,
+        required_columns=TARGET_COMPANY_COLUMNS,
+    )
 
     print(f"总企业数量：{len(df)}")
     print(f"A级：{count_priority(df, 'A')}")

@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 
 from project_keywords import FOCUS_INDUSTRIES, FOCUS_REGIONS, PROJECT_KEYWORDS
 from project_sources import PROJECT_SOURCES
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 OUTPUT_FILE = "production_projects.xlsx"
@@ -154,7 +155,11 @@ def run_project_monitor(
             combined_df[column] = ""
 
     combined_df = combined_df[OUTPUT_COLUMNS]
-    combined_df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        combined_df,
+        output_file,
+        required_columns=OUTPUT_COLUMNS,
+    )
 
     print(f"[DONE] Raw count: {len(raw_items)}")
     print(f"[DONE] Valid count: {len(current_df)}")
@@ -314,7 +319,11 @@ def export_raw_debug(raw_items, debug_file):
             debug_df[column] = ""
 
     debug_df = debug_df[DEBUG_COLUMNS]
-    debug_df.to_excel(debug_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        debug_df,
+        debug_file,
+        required_columns=DEBUG_COLUMNS,
+    )
     return debug_file
 
 
@@ -502,11 +511,7 @@ def read_history(output_file):
     if not os.path.exists(output_file):
         return pd.DataFrame(columns=OUTPUT_COLUMNS)
 
-    try:
-        return pd.read_excel(output_file)
-    except Exception as error:
-        print(f"[ERROR] Existing production file read failed; recreating: {error}")
-        return pd.DataFrame(columns=OUTPUT_COLUMNS)
+    return read_excel_safe(output_file)
 
 
 def build_item_text(item, include_query=False):

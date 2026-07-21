@@ -9,6 +9,7 @@ import os
 import pandas as pd
 
 from paths import BID_RESULTS, HIGH_VALUE_LEADS
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 HIGH_VALUE_OUTPUT_FILE = HIGH_VALUE_LEADS
@@ -67,7 +68,7 @@ def export_high_value_leads(
             "output_file": output_file,
         }
 
-    df = pd.read_excel(input_file)
+    df = read_excel_safe(input_file)
     total_count = len(df)
     df = ensure_columns(df)
     high_value_df = filter_high_value(df).copy()
@@ -91,7 +92,11 @@ def export_high_value_leads(
         )
 
     output_df = high_value_df[OUTPUT_COLUMNS] if not high_value_df.empty else pd.DataFrame(columns=OUTPUT_COLUMNS)
-    output_df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        output_df,
+        output_file,
+        required_columns=OUTPUT_COLUMNS,
+    )
 
     five_star_count = len(
         output_df[output_df["推荐等级"].astype(str) == "五星线索"]

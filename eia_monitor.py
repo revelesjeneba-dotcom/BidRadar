@@ -21,6 +21,7 @@ from eia_keywords import (
     PRODUCTION_KEYWORDS,
 )
 from eia_sources import EIA_SOURCES
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 OUTPUT_FILE = "eia_projects.xlsx"
@@ -149,7 +150,11 @@ def run_eia_monitor(sources=None, output_file=OUTPUT_FILE):
             combined_df[column] = ""
 
     combined_df = combined_df[OUTPUT_COLUMNS]
-    combined_df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        combined_df,
+        output_file,
+        required_columns=OUTPUT_COLUMNS,
+    )
 
     print(f"[DONE] Raw count: {len(raw_items)}")
     print(f"[DONE] Valid count: {len(current_df)}")
@@ -441,11 +446,7 @@ def read_history(output_file):
     if not os.path.exists(output_file):
         return pd.DataFrame(columns=OUTPUT_COLUMNS)
 
-    try:
-        return pd.read_excel(output_file)
-    except Exception as error:
-        print(f"[ERROR] Existing EIA file read failed; recreating: {error}")
-        return pd.DataFrame(columns=OUTPUT_COLUMNS)
+    return read_excel_safe(output_file)
 
 
 def build_record_text(record):

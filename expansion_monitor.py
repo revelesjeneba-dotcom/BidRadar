@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 
 from expansion_keywords import EXPANSION_KEYWORDS, PRIORITY_INDUSTRIES
 from expansion_sources import EXPANSION_SOURCES
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 OUTPUT_FILE = "expansion_projects.xlsx"
@@ -156,7 +157,11 @@ def run_expansion_monitor(
             combined_df[column] = ""
 
     combined_df = combined_df[OUTPUT_COLUMNS]
-    combined_df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        combined_df,
+        output_file,
+        required_columns=OUTPUT_COLUMNS,
+    )
 
     print(f"原始数量：{len(raw_items)}")
     print(f"有效数量：{len(current_df)}")
@@ -427,11 +432,7 @@ def read_history(output_file):
     if not os.path.exists(output_file):
         return pd.DataFrame(columns=OUTPUT_COLUMNS)
 
-    try:
-        return pd.read_excel(output_file)
-    except Exception as error:
-        print(f"[ERROR] Existing expansion file read failed; recreating: {error}")
-        return pd.DataFrame(columns=OUTPUT_COLUMNS)
+    return read_excel_safe(output_file)
 
 
 def clean_link(link, base_url):

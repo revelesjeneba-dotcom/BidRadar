@@ -101,6 +101,23 @@ enterprise_url_status.xlsx
 工具。V6.6-05 不改变企业来源配置、候选排序、人工确认、URL 验证或登录判断
 规则。
 
+## 项目监控与其他正式结果写入保护（V6.6-06）
+
+```text
+target_company_manager.py -> 安全写入 target_companies.xlsx
+high_value_filter.py       -> 安全写入 high_value_leads.xlsx
+contact_finder.py          -> 安全写入 customer_contact_candidates.xlsx
+
+project_monitor.py   -> 安全合并 production_projects.xlsx
+eia_monitor.py       -> 安全合并 eia_projects.xlsx
+expansion_monitor.py -> 安全合并 expansion_projects.xlsx
+```
+
+历史合并型项目文件存在但无法读取时，处理立即停止。可重算文件允许覆盖，但
+已有文件会先备份，所有输出都经过临时写入和结构验证。目标企业表保留未知人工
+字段及原始列顺序。V6.6-06 不改变采集、过滤、评分、推荐、唯一 ID 或历史合并
+规则。
+
 ## 评分
 
 - `scoring.py` 为主招标线索评分。

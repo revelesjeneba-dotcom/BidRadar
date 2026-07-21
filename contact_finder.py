@@ -13,6 +13,8 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
+from utils.excel_helper import read_excel_safe, write_excel_safe
+
 
 CUSTOMER_POOL_FILE = "customer_pool.xlsx"
 OUTPUT_FILE = "customer_contact_candidates.xlsx"
@@ -103,7 +105,11 @@ def find_contact_candidates(
         )
 
     candidates_df = candidates_df[CANDIDATE_COLUMNS]
-    candidates_df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        candidates_df,
+        output_file,
+        required_columns=CANDIDATE_COLUMNS,
+    )
 
     print(f"客户数量：{len(target_df)}")
     print(f"候选结果数量：{len(candidates_df)}")
@@ -121,11 +127,7 @@ def read_customers(customer_pool_file):
         print(f"[ERROR] Customer pool file not found: {customer_pool_file}")
         return pd.DataFrame(columns=CUSTOMER_COLUMNS)
 
-    try:
-        df = pd.read_excel(customer_pool_file)
-    except Exception as error:
-        print(f"[ERROR] Failed to read customer pool: {error}")
-        return pd.DataFrame(columns=CUSTOMER_COLUMNS)
+    df = read_excel_safe(customer_pool_file)
 
     for column in CUSTOMER_COLUMNS:
         if column not in df.columns:
