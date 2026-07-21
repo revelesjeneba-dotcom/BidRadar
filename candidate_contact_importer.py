@@ -10,6 +10,7 @@ import os
 import pandas as pd
 
 from paths import CUSTOMER_CONTACT_CANDIDATES, CUSTOMER_POOL
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 CANDIDATES_FILE = CUSTOMER_CONTACT_CANDIDATES
 CUSTOMER_POOL_FILE = CUSTOMER_POOL
@@ -55,8 +56,8 @@ def import_confirmed_contacts(
         print(f"[ERROR] Customer pool file not found: {customer_pool_file}")
         return empty_stats(customer_pool_file)
 
-    candidates_df = pd.read_excel(candidates_file)
-    pool_df = pd.read_excel(customer_pool_file)
+    candidates_df = read_excel_safe(candidates_file)
+    pool_df = read_excel_safe(customer_pool_file)
     candidates_df = ensure_columns(candidates_df, CANDIDATE_COLUMNS)
     pool_df = ensure_columns(pool_df, POOL_REQUIRED_COLUMNS, keep_extra=True)
 
@@ -97,7 +98,11 @@ def import_confirmed_contacts(
             skipped += 1
             print(f"[SKIP] No empty fields to update: {company_name}")
 
-    pool_df.to_excel(customer_pool_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        pool_df,
+        customer_pool_file,
+        required_columns=POOL_REQUIRED_COLUMNS,
+    )
 
     print(f"[DONE] 总候选数量：{total_candidates}")
     print(f"[DONE] 确认数量：{len(confirmed_df)}")
@@ -162,6 +167,7 @@ def ensure_columns(df, columns, keep_extra=False):
     for column in columns:
         if column not in df.columns:
             df[column] = ""
+        df[column] = df[column].astype("object")
 
     if keep_extra:
         return df

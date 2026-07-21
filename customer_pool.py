@@ -10,6 +10,7 @@ import os
 import pandas as pd
 
 from paths import CUSTOMER_POOL, HIGH_VALUE_LEADS, TARGET_COMPANIES
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 HIGH_VALUE_FILE = HIGH_VALUE_LEADS
 TARGET_COMPANY_FILE = TARGET_COMPANIES
@@ -68,7 +69,7 @@ def build_customer_pool(
 
     high_value_df = ensure_columns(high_value_df, HIGH_VALUE_COLUMNS)
     target_df = ensure_columns(target_df, TARGET_COLUMNS)
-    pool_df = ensure_columns(pool_df, CUSTOMER_COLUMNS)
+    pool_df = ensure_columns(pool_df, CUSTOMER_COLUMNS, keep_extra=True)
 
     target_map = build_target_map(target_df)
     today = date.today().strftime("%Y-%m-%d")
@@ -103,13 +104,16 @@ def build_customer_pool(
         existing_names.add(company_name)
         new_count += 1
 
-    pool_df = ensure_columns(pool_df, CUSTOMER_COLUMNS)
+    pool_df = ensure_columns(pool_df, CUSTOMER_COLUMNS, keep_extra=True)
     pool_df = pool_df.drop_duplicates(subset=["企业名称"], keep="first")
     pool_df["_sort_score"] = pool_df["价值分数"].apply(parse_score)
     pool_df = pool_df.sort_values(by="_sort_score", ascending=False)
     pool_df = pool_df.drop(columns=["_sort_score"])
-    pool_df = pool_df[CUSTOMER_COLUMNS]
-    pool_df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        pool_df,
+        output_file,
+        required_columns=CUSTOMER_COLUMNS,
+    )
 
     print(f"总客户数：{len(pool_df)}")
     print(f"新增客户：{new_count}")
@@ -207,20 +211,24 @@ def read_excel_or_empty(path, columns):
     if not os.path.exists(path):
         return pd.DataFrame(columns=columns)
 
-    try:
-        return pd.read_excel(path)
-    except Exception as error:
-        print(f"[ERROR] Failed to read {path}; using empty data: {error}")
-        return pd.DataFrame(columns=columns)
+    return read_excel_safe(path)
 
 
-def ensure_columns(df, columns):
+def ensure_columns(df, columns, keep_extra=False):
+    original_columns = list(df.columns)
+
     for column in columns:
         if column not in df.columns:
             df[column] = ""
 
     for column in columns:
         df[column] = df[column].astype("object")
+
+    if keep_extra:
+        appended_columns = [
+            column for column in columns if column not in original_columns
+        ]
+        return df[original_columns + appended_columns]
 
     return df[columns]
 

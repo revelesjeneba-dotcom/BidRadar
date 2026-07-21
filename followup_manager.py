@@ -6,10 +6,18 @@ except:
 
 from datetime import date, datetime
 import os
+from pathlib import Path
+import shutil
 
 import pandas as pd
 
 from paths import CUSTOMER_POOL, FOLLOWUP_TASKS
+from utils.excel_helper import (
+    ExcelWriteError,
+    backup_excel,
+    read_excel_safe,
+    write_excel_safe,
+)
 
 CUSTOMER_POOL_FILE = CUSTOMER_POOL
 OUTPUT_FILE = FOLLOWUP_TASKS
@@ -48,11 +56,7 @@ def build_followup_tasks(
         print(f"[ERROR] Customer pool file not found: {customer_pool_file}")
         return empty_stats(output_file)
 
-    try:
-        df = pd.read_excel(customer_pool_file)
-    except Exception as error:
-        print(f"[ERROR] Failed to read customer pool: {error}")
-        return empty_stats(output_file)
+    df = read_excel_safe(customer_pool_file)
 
     df = ensure_followup_columns(df)
     today = date.today()
@@ -73,8 +77,12 @@ def build_followup_tasks(
     task_df = task_df[TASK_COLUMNS]
     task_df = sort_tasks(task_df)
 
-    df.to_excel(customer_pool_file, index=False, engine="openpyxl")
-    task_df.to_excel(output_file, index=False, engine="openpyxl")
+    _write_followup_outputs(
+        df,
+        task_df,
+        customer_pool_file,
+        output_file,
+    )
 
     stats = build_stats(df, task_df)
 
@@ -260,6 +268,74 @@ def empty_stats(output_file):
         "days_30_count": 0,
         "output_file": output_file,
     }
+
+
+def _write_followup_outputs(
+    customer_df,
+    task_df,
+    customer_pool_file,
+    output_file,
+):
+    """Write the related workbooks as a recoverable two-file operation."""
+    customer_path = Path(customer_pool_file)
+    task_path = Path(output_file)
+    customer_existed = customer_path.is_file()
+    task_existed = task_path.is_file()
+    customer_backup = backup_excel(customer_path) if customer_existed else None
+    task_backup = backup_excel(task_path) if task_existed else None
+
+    try:
+        write_excel_safe(
+            customer_df,
+            customer_path,
+            required_columns=["企业名称", *FOLLOWUP_COLUMNS],
+            backup=False,
+        )
+        write_excel_safe(
+            task_df,
+            task_path,
+            required_columns=TASK_COLUMNS,
+            backup=False,
+        )
+    except Exception as error:
+        recovery_errors = []
+        _restore_output(
+            customer_path,
+            customer_existed,
+            customer_backup,
+            recovery_errors,
+        )
+        _restore_output(
+            task_path,
+            task_existed,
+            task_backup,
+            recovery_errors,
+        )
+
+        if recovery_errors:
+            backup_details = (
+                f"customer backup={customer_backup}; task backup={task_backup}"
+            )
+            raise ExcelWriteError(
+                "Follow-up output write failed and automatic recovery was "
+                f"incomplete ({'; '.join(recovery_errors)}). {backup_details}"
+            ) from error
+
+        raise ExcelWriteError(
+            "Follow-up output write failed; previous files were restored"
+        ) from error
+
+
+def _restore_output(path, existed, backup_path, errors):
+    try:
+        if existed:
+            if backup_path is None:
+                raise FileNotFoundError(f"Missing backup for {path}")
+            shutil.copy2(backup_path, path)
+        elif path.exists():
+            path.unlink()
+    except Exception as error:
+        errors.append(f"{path}: {error}")
 
 
 if __name__ == "__main__":

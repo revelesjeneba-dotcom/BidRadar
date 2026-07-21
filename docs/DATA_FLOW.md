@@ -56,6 +56,28 @@ exporter.py / manual_import.py / jianyu_importer.py
 读取时，不允许以空历史继续写入。V6.6-03 没有改变主招标结果的列结构和
 业务数据流。
 
+## 客户池和跟进任务写入保护（V6.6-04）
+
+```text
+high_value_leads.xlsx + target_companies.xlsx
+  -> customer_pool.py（保留未知人工字段和原列顺序）
+  -> 安全写入 customer_pool.xlsx
+
+customer_contact_candidates.xlsx
+  -> candidate_contact_importer.py
+  -> 安全写入 customer_pool.xlsx
+
+customer_pool.xlsx
+  -> followup_manager.py（内存生成客户池补充字段和任务表）
+  -> 分别备份两个已有输出
+  -> 安全写入 customer_pool.xlsx 和 followup_tasks.xlsx
+  -> 任一失败时恢复两份旧文件
+```
+
+自动恢复失败时，错误信息会给出本次客户池与任务表备份路径。人工恢复方式是
+停止所有相关脚本，将对应备份文件复制回原文件位置，再核对列结构和文件哈希。
+V6.6-04 不改变客户匹配、客户更新、联系方式导入或跟进任务生成规则。
+
 ## 评分
 
 - `scoring.py` 为主招标线索评分。
