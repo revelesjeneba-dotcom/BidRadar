@@ -20,6 +20,7 @@ from industry_filter import is_carton_related
 from reporter import generate_daily_report
 from sample_data import get_sample_bids
 from scoring import score_bid
+from utils.excel_helper import write_excel_safe
 
 
 OUTPUT_DIR = "test_output"
@@ -206,7 +207,11 @@ def export_test_results(records, output_file):
         df["是否新增"] = "是"
 
     df = df[EXPORT_COLUMNS]
-    df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        df,
+        output_file,
+        required_columns=EXPORT_COLUMNS,
+    )
     return output_file
 
 

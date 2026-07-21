@@ -11,6 +11,8 @@ from urllib.parse import quote_plus, urljoin
 
 import pandas as pd
 
+from utils.excel_helper import write_excel_safe
+
 from browser_runner import open_browser
 from keywords import KEYWORDS
 
@@ -273,7 +275,11 @@ def export_results(results, output_file=OUTPUT_FILE):
             keep="first",
         )
 
-    df.to_excel(output_file, index=False, engine="openpyxl")
+    write_excel_safe(
+        df,
+        output_file,
+        required_columns=RESULT_COLUMNS,
+    )
     return output_file
 
 

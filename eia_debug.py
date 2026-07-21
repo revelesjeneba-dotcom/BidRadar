@@ -12,6 +12,8 @@ import pandas as pd
 
 import eia_monitor
 from eia_sources import EIA_SOURCES
+from reporter import write_text_safe
+from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
 RAW_FILE = "eia_raw_results.xlsx"
@@ -128,7 +130,11 @@ DEBUG_COLUMNS = [
 def run_eia_debug():
     raw_df = load_raw_data()
     raw_df = ensure_debug_columns(raw_df)
-    raw_df.to_excel(DEBUG_FILE, index=False, engine="openpyxl")
+    write_excel_safe(
+        raw_df,
+        DEBUG_FILE,
+        required_columns=DEBUG_COLUMNS,
+    )
 
     stats = build_stats(raw_df)
     eia_counts = count_keywords(raw_df, EIA_DEBUG_KEYWORDS)
@@ -144,8 +150,7 @@ def run_eia_debug():
         sample_titles,
     )
 
-    with open(DIAGNOSIS_FILE, "w", encoding="utf-8") as file:
-        file.write("\n".join(lines))
+    write_text_safe("\n".join(lines), DIAGNOSIS_FILE)
 
     print_summary(stats, eia_counts, industry_counts, region_counts, sample_titles)
     print(f"[DONE] Debug file: {DEBUG_FILE}")
@@ -162,7 +167,7 @@ def run_eia_debug():
 
 def load_raw_data():
     if os.path.exists(RAW_FILE):
-        return pd.read_excel(RAW_FILE)
+        return read_excel_safe(RAW_FILE)
 
     session = eia_monitor.create_session()
     raw_items = []

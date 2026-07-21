@@ -8,6 +8,7 @@ It does not filter, score, merge history, or change business logic.
 import pandas as pd
 
 from crawler import crawl_all_sources
+from utils.excel_helper import write_excel_safe
 
 
 OUTPUT_FILE = "raw_results_debug.xlsx"
@@ -49,7 +50,7 @@ def main():
         )
 
     df = pd.DataFrame(rows)
-    df.to_excel(OUTPUT_FILE, index=False, engine="openpyxl")
+    write_excel_safe(df, OUTPUT_FILE)
 
     print(f"原始数据总数：{len(df)}")
     print()
