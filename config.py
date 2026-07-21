@@ -4,6 +4,8 @@ BidRadar V1 configuration.
 Chinese name: 纸箱招标雷达系统
 """
 
+from paths import BID_RESULTS_FILE
+
 PROJECT_NAME = "BidRadar"
 PROJECT_CN_NAME = "纸箱招标雷达系统"
 
@@ -164,7 +166,7 @@ for province_name in PROVINCE_TEXT_ALIASES:
     if province_name not in PROVINCES:
         PROVINCES.append(province_name)
 
-OUTPUT_FILE = "bid_results.xlsx"
+OUTPUT_FILE = BID_RESULTS_FILE
 
 EXCEL_COLUMNS = [
     "采集日期",

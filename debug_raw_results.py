@@ -8,10 +8,11 @@ It does not filter, score, merge history, or change business logic.
 import pandas as pd
 
 from crawler import crawl_all_sources
+from paths import RAW_RESULTS_DEBUG_FILE
 from utils.excel_helper import write_excel_safe
 
 
-OUTPUT_FILE = "raw_results_debug.xlsx"
+OUTPUT_FILE = RAW_RESULTS_DEBUG_FILE
 TITLE_CHECK_WORDS = [
     "纸箱",
     "包装箱",

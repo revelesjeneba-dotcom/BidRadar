@@ -15,10 +15,11 @@ from utils.excel_helper import write_excel_safe
 
 from browser_runner import open_browser
 from keywords import KEYWORDS
+from paths import RAW_JIANYU_RESULTS_FILE
 
 
 JIAN_YU_HOME = "https://www.jianyu360.com"
-OUTPUT_FILE = "raw_jianyu_results.xlsx"
+OUTPUT_FILE = RAW_JIANYU_RESULTS_FILE
 WAIT_BETWEEN_KEYWORDS_SECONDS = 5
 
 RESULT_COLUMNS = [

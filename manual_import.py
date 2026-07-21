@@ -9,13 +9,12 @@ import os
 
 import pandas as pd
 
-from config import OUTPUT_FILE, PROVINCE_CONFIDENCE_COLUMN
+from config import PROVINCE_CONFIDENCE_COLUMN
 from exporter import EXPORT_COLUMNS
+from paths import BID_RESULTS_FILE, MANUAL_IMPORT_FILE
 from scoring import score_bid
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
-
-MANUAL_IMPORT_FILE = "manual_import.xlsx"
 
 MANUAL_COLUMNS = [
     "标题",
@@ -44,7 +43,7 @@ def create_manual_template(import_file=MANUAL_IMPORT_FILE):
 
 def import_manual_bids(
     import_file=MANUAL_IMPORT_FILE,
-    output_file=OUTPUT_FILE,
+    output_file=BID_RESULTS_FILE,
 ):
     if not os.path.exists(import_file):
         create_manual_template(import_file)

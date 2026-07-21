@@ -11,10 +11,11 @@ from urllib.parse import urlparse
 import pandas as pd
 
 from enterprise_sources import ENTERPRISE_SOURCES
+from paths import ENTERPRISE_CANDIDATES_FILE
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-INPUT_FILE = "enterprise_candidates.xlsx"
+INPUT_FILE = ENTERPRISE_CANDIDATES_FILE
 
 URL_SCORE_KEYWORDS = [
     "srm",

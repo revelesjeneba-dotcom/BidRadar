@@ -9,14 +9,15 @@ import os
 
 import pandas as pd
 
-from config import OUTPUT_FILE, PROVINCE_CONFIDENCE_COLUMN
+from config import PROVINCE_CONFIDENCE_COLUMN
 from exporter import EXPORT_COLUMNS
 from industry_filter import is_carton_related
+from paths import BID_RESULTS_FILE, RAW_JIANYU_RESULTS_FILE
 from scoring import score_bid
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-RAW_FILE = "raw_jianyu_results.xlsx"
+RAW_FILE = RAW_JIANYU_RESULTS_FILE
 
 RAW_COLUMNS = [
     "搜索关键词",
@@ -30,7 +31,7 @@ RAW_COLUMNS = [
 
 def import_jianyu_results(
     raw_file=RAW_FILE,
-    output_file=OUTPUT_FILE,
+    output_file=BID_RESULTS_FILE,
 ):
     if not os.path.exists(raw_file):
         print(f"[ERROR] Raw Jianyu result file not found: {raw_file}")

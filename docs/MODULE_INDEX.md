@@ -32,7 +32,7 @@
 | `keywords.py` | 剑鱼关键词 | 无 | 无 | 否 | 否 | B |
 | `main.py` | 主流程入口 | `config.py`、`sources.py` 或 `sample_data.py` | `bid_results.xlsx`、`daily_report.txt` | 默认是 | 是 | A |
 | `manual_import.py` | 手工导入 | `manual_import.xlsx`、`bid_results.xlsx` | `manual_import.xlsx`、`bid_results.xlsx` | 否 | 是 | B |
-| `paths.py` | 路径登记 | 无 | 无 | 否 | 否 | A |
+| `paths.py` | 全部业务、项目、raw/debug 和 TXT 路径统一登记 | 项目文件位置 | 绝对 `Path` 常量 | 否 | 否 | A |
 | `project_keywords.py` | 生产项目关键词 | 无 | 无 | 否 | 否 | B |
 | `project_monitor.py` | 生产项目监控 | `project_sources.py`、`production_projects.xlsx` | `production_projects.xlsx`、`production_raw_debug.xlsx` | 是 | 是 | B |
 | `project_sources.py` | 生产项目来源配置 | 无 | 无 | 否 | 否 | B |
@@ -45,3 +45,4 @@
 | `test_sample_run.py` | 模拟安全测试 | `sample_data.py` | `test_output/*` | 否，主动阻断 | 是 | A |
 | `tests/test_excel_contracts.py` | 核心 Excel 列契约检查 | 现有核心 Excel、源码列定义 | 无 | 否 | 否 | A |
 | `tests/test_business_baseline.py` | 模拟数据业务回归基线 | `sample_data.py`、纯业务函数 | 无 | 否，主动阻断 | 否 | A |
+| `tests/test_paths.py` | 路径登记、跨工作目录和平台兼容检查 | `paths.py`、业务脚本源码 | 无 | 否 | 否 | A |

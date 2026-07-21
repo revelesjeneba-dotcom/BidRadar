@@ -15,11 +15,12 @@ import requests
 from bs4 import BeautifulSoup
 
 from expansion_keywords import EXPANSION_KEYWORDS, PRIORITY_INDUSTRIES
+from paths import EXPANSION_PROJECTS_FILE
 from expansion_sources import EXPANSION_SOURCES
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-OUTPUT_FILE = "expansion_projects.xlsx"
+OUTPUT_FILE = EXPANSION_PROJECTS_FILE
 
 OUTPUT_COLUMNS = [
     "唯一ID",

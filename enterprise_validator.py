@@ -23,10 +23,11 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
+from paths import ENTERPRISE_URL_STATUS_FILE
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-STATUS_FILE = "enterprise_url_status.xlsx"
+STATUS_FILE = ENTERPRISE_URL_STATUS_FILE
 
 VALIDATION_COLUMNS = [
     "页面标题",

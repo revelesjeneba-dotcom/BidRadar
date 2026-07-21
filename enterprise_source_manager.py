@@ -17,10 +17,11 @@ import os
 import pandas as pd
 
 from enterprise_sources import ENTERPRISE_SOURCES
+from paths import ENTERPRISE_URL_STATUS_FILE
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-OUTPUT_FILE = "enterprise_url_status.xlsx"
+OUTPUT_FILE = ENTERPRISE_URL_STATUS_FILE
 
 STATUS_COLUMNS = [
     "企业名称",

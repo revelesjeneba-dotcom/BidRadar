@@ -13,11 +13,11 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
+from paths import CUSTOMER_CONTACT_CANDIDATES_FILE, CUSTOMER_POOL_FILE
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-CUSTOMER_POOL_FILE = "customer_pool.xlsx"
-OUTPUT_FILE = "customer_contact_candidates.xlsx"
+OUTPUT_FILE = CUSTOMER_CONTACT_CANDIDATES_FILE
 
 CUSTOMER_COLUMNS = [
     "企业名称",

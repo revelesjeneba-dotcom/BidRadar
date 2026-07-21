@@ -12,13 +12,14 @@ import pandas as pd
 
 import eia_monitor
 from eia_sources import EIA_SOURCES
+from paths import EIA_DIAGNOSIS_FILE, EIA_RAW_DEBUG_FILE, EIA_RAW_RESULTS_FILE
 from reporter import write_text_safe
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-RAW_FILE = "eia_raw_results.xlsx"
-DEBUG_FILE = "eia_raw_debug.xlsx"
-DIAGNOSIS_FILE = "eia_diagnosis.txt"
+RAW_FILE = EIA_RAW_RESULTS_FILE
+DEBUG_FILE = EIA_RAW_DEBUG_FILE
+DIAGNOSIS_FILE = EIA_DIAGNOSIS_FILE
 
 EIA_DEBUG_KEYWORDS = [
     "环境影响报告书",

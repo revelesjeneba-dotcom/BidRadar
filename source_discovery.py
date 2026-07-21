@@ -22,10 +22,11 @@ import requests
 from bs4 import BeautifulSoup
 
 from enterprise_sources import ENTERPRISE_SOURCES
+from paths import ENTERPRISE_CANDIDATES_FILE
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-OUTPUT_FILE = "enterprise_candidates.xlsx"
+OUTPUT_FILE = ENTERPRISE_CANDIDATES_FILE
 
 SEARCH_SUFFIXES = [
     "招标",

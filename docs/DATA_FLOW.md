@@ -118,6 +118,18 @@ expansion_monitor.py -> 安全合并 expansion_projects.xlsx
 字段及原始列顺序。V6.6-06 不改变采集、过滤、评分、推荐、唯一 ID 或历史合并
 规则。
 
+## 路径解析（V6.6-08）
+
+```text
+业务脚本
+  -> 从 paths.py 导入 Path 常量
+  -> PROJECT_ROOT = Path(paths.py).resolve().parent
+  -> 项目根目录下的原文件名
+```
+
+路径解析不再依赖 shell 当前目录。Windows 与 macOS 使用 `pathlib.Path` 生成
+本机路径；文件名、数据流、读写规则和输出位置保持不变。
+
 ## 评分
 
 - `scoring.py` 为主招标线索评分。

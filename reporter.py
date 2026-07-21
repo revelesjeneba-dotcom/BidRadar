@@ -12,10 +12,11 @@ import tempfile
 
 import pandas as pd
 
+from paths import DAILY_REPORT_FILE
 from utils.excel_helper import read_excel_safe
 
 
-REPORT_FILE = "daily_report.txt"
+REPORT_FILE = DAILY_REPORT_FILE
 
 
 def generate_daily_report(excel_file, report_file=REPORT_FILE):

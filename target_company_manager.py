@@ -8,10 +8,11 @@ import os
 
 import pandas as pd
 
+from paths import TARGET_COMPANIES_FILE
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-OUTPUT_FILE = "target_companies.xlsx"
+OUTPUT_FILE = TARGET_COMPANIES_FILE
 
 TARGET_COMPANY_COLUMNS = [
     "企业名称",

@@ -15,12 +15,13 @@ import requests
 from bs4 import BeautifulSoup
 
 from project_keywords import FOCUS_INDUSTRIES, FOCUS_REGIONS, PROJECT_KEYWORDS
+from paths import PRODUCTION_PROJECTS_FILE, PRODUCTION_RAW_DEBUG_FILE
 from project_sources import PROJECT_SOURCES
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-OUTPUT_FILE = "production_projects.xlsx"
-DEBUG_FILE = "production_raw_debug.xlsx"
+OUTPUT_FILE = PRODUCTION_PROJECTS_FILE
+DEBUG_FILE = PRODUCTION_RAW_DEBUG_FILE
 
 OUTPUT_COLUMNS = [
     "唯一ID",

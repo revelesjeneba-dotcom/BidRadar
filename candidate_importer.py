@@ -15,11 +15,12 @@ import os
 
 import pandas as pd
 
+from paths import ENTERPRISE_CANDIDATES_FILE, ENTERPRISE_URL_STATUS_FILE
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-CANDIDATES_FILE = "enterprise_candidates.xlsx"
-STATUS_FILE = "enterprise_url_status.xlsx"
+CANDIDATES_FILE = ENTERPRISE_CANDIDATES_FILE
+STATUS_FILE = ENTERPRISE_URL_STATUS_FILE
 
 CONFIRMED_VALUE = "是"
 SKIP_REMARK = "已有采购平台网址，跳过"

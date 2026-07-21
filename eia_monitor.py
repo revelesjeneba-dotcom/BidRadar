@@ -21,10 +21,11 @@ from eia_keywords import (
     PRODUCTION_KEYWORDS,
 )
 from eia_sources import EIA_SOURCES
+from paths import EIA_PROJECTS_FILE
 from utils.excel_helper import read_excel_safe, write_excel_safe
 
 
-OUTPUT_FILE = "eia_projects.xlsx"
+OUTPUT_FILE = EIA_PROJECTS_FILE
 
 OUTPUT_COLUMNS = [
     "唯一ID",
