@@ -43,3 +43,5 @@
 | `sources.py` | 招标来源配置 | 无 | 无 | 否 | 否 | A |
 | `target_company_manager.py` | 目标企业表维护 | `target_companies.xlsx` | `target_companies.xlsx` | 否 | 是 | B |
 | `test_sample_run.py` | 模拟安全测试 | `sample_data.py` | `test_output/*` | 否，主动阻断 | 是 | A |
+| `tests/test_excel_contracts.py` | 核心 Excel 列契约检查 | 现有核心 Excel、源码列定义 | 无 | 否 | 否 | A |
+| `tests/test_business_baseline.py` | 模拟数据业务回归基线 | `sample_data.py`、纯业务函数 | 无 | 否，主动阻断 | 否 | A |
