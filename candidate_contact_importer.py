@@ -9,9 +9,10 @@ import os
 
 import pandas as pd
 
+from paths import CUSTOMER_CONTACT_CANDIDATES, CUSTOMER_POOL
 
-CANDIDATES_FILE = "customer_contact_candidates.xlsx"
-CUSTOMER_POOL_FILE = "customer_pool.xlsx"
+CANDIDATES_FILE = CUSTOMER_CONTACT_CANDIDATES
+CUSTOMER_POOL_FILE = CUSTOMER_POOL
 
 CANDIDATE_COLUMNS = [
     "企业名称",

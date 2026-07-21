@@ -11,7 +11,6 @@ import pandas as pd
 from config import (
     ALLOW_UNKNOWN_PROVINCE,
     INDUSTRY_KEYWORDS,
-    OUTPUT_FILE,
     PROJECT_CN_NAME,
     PROVINCE_CONFIDENCE_COLUMN,
     PROVINCE_ALIASES,
@@ -22,6 +21,7 @@ from config import (
 from crawler import crawl_all_sources
 from exporter import EXPORT_COLUMNS, export_to_excel, make_unique_id
 from industry_filter import is_carton_related
+from paths import BID_RESULTS
 from reporter import generate_daily_report
 from sample_data import get_sample_bids
 from scoring import score_bid
@@ -166,12 +166,12 @@ def main():
         raw_bids = crawl_all_sources()
 
     results = build_results(raw_bids)
-    export_to_excel(results, OUTPUT_FILE)
-    generate_daily_report(OUTPUT_FILE)
+    export_to_excel(results, BID_RESULTS)
+    generate_daily_report(BID_RESULTS)
 
     print(f"[DONE] Raw records: {len(raw_bids)}")
     print(f"[DONE] Filtered records: {len(results)}")
-    print(f"[DONE] Export file: {OUTPUT_FILE}")
+    print(f"[DONE] Export file: {BID_RESULTS}")
 
 
 if __name__ == "__main__":

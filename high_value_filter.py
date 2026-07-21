@@ -8,10 +8,10 @@ import os
 
 import pandas as pd
 
-from config import OUTPUT_FILE
+from paths import BID_RESULTS, HIGH_VALUE_LEADS
 
 
-HIGH_VALUE_OUTPUT_FILE = "high_value_leads.xlsx"
+HIGH_VALUE_OUTPUT_FILE = HIGH_VALUE_LEADS
 
 HIGH_VALUE_KEYWORDS = [
     "供应商征集",
@@ -54,7 +54,7 @@ OUTPUT_COLUMNS = [
 
 
 def export_high_value_leads(
-    input_file=OUTPUT_FILE,
+    input_file=BID_RESULTS,
     output_file=HIGH_VALUE_OUTPUT_FILE,
 ):
     if not os.path.exists(input_file):

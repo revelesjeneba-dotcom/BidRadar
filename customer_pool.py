@@ -9,10 +9,11 @@ import os
 
 import pandas as pd
 
+from paths import CUSTOMER_POOL, HIGH_VALUE_LEADS, TARGET_COMPANIES
 
-HIGH_VALUE_FILE = "high_value_leads.xlsx"
-TARGET_COMPANY_FILE = "target_companies.xlsx"
-OUTPUT_FILE = "customer_pool.xlsx"
+HIGH_VALUE_FILE = HIGH_VALUE_LEADS
+TARGET_COMPANY_FILE = TARGET_COMPANIES
+OUTPUT_FILE = CUSTOMER_POOL
 
 CUSTOMER_COLUMNS = [
     "企业名称",

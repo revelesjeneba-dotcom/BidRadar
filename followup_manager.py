@@ -9,9 +9,10 @@ import os
 
 import pandas as pd
 
+from paths import CUSTOMER_POOL, FOLLOWUP_TASKS
 
-CUSTOMER_POOL_FILE = "customer_pool.xlsx"
-OUTPUT_FILE = "followup_tasks.xlsx"
+CUSTOMER_POOL_FILE = CUSTOMER_POOL
+OUTPUT_FILE = FOLLOWUP_TASKS
 
 FOLLOWUP_COLUMNS = [
     "首次联系日期",
